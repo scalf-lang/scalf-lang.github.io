@@ -1,0 +1,102 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCALF Language</title>
+  <meta name="description" content="SCALF is a secure-by-default scripting language for predictable automation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="./">SCALF</a>
+    <nav>
+      <a href="#quickstart">Quickstart</a>
+      <a href="#features">Features</a>
+      <a href="#docs">Docs</a>
+      <a class="nav-cta" href="./errors/">Error Docs</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero reveal">
+      <p class="eyebrow">Predictable scripting, zero setup</p>
+      <h1>Build scripts that are secure by default and easy to ship.</h1>
+      <p class="hero-copy">
+        SCALF is a scripting language focused on stability, permission-aware runtime behavior,
+        and practical tooling for formatting, linting, testing, and standalone builds.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#quickstart">Run It</a>
+        <a class="btn btn-ghost" href="./language_spec.md">Read Spec</a>
+      </div>
+      <div class="hero-grid">
+        <article>
+          <h2>Security first</h2>
+          <p>Granular runtime permissions for file system, network, and environment access.</p>
+        </article>
+        <article>
+          <h2>Developer tooling</h2>
+          <p>Built-in `fmt`, `check`, `test`, docs generation, and optional VM execution.</p>
+        </article>
+        <article>
+          <h2>Deployable output</h2>
+          <p>Compile scripts into standalone binaries with feature-aware build minimization.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="quickstart" class="panel reveal">
+      <div class="panel-head">
+        <p class="eyebrow">Quickstart</p>
+        <h2>Run SCALF in minutes</h2>
+      </div>
+      <pre><code>cargo test
+cargo run
+cargo run -- docs
+cargo run -- fmt --check path/to/file.rask
+cargo run -- check path/to/file.rask
+cargo run -- test path/to/file.rask
+cargo run -- --vm path/to/file.rask
+cargo run -- build path/to/file.rask --target=linux-x64
+cargo run -- startup path/to/file.rask --iterations=25</code></pre>
+    </section>
+
+    <section id="features" class="reveal">
+      <p class="eyebrow">Current Capabilities</p>
+      <h2>From parsing to standalone build targets</h2>
+      <div class="timeline">
+        <article><h3>Language core</h3><p>Lexer, parser, control flow, functions, collections, and pattern matching.</p></article>
+        <article><h3>Type system</h3><p>Nullable types, unions, generics, and function types with checker integration.</p></article>
+        <article><h3>Runtime + stdlib</h3><p>Strings, lists, maps, path, fs, json, env, http, time, and crypto support.</p></article>
+        <article><h3>Permissions + diagnostics</h3><p>Explicit allowlists and actionable runtime diagnostics with docs links.</p></article>
+        <article><h3>Tooling + VM</h3><p>Formatter, lints, tests, bytecode VM path, startup benchmarking, build command.</p></article>
+      </div>
+    </section>
+
+    <section id="docs" class="panel reveal">
+      <div class="panel-head">
+        <p class="eyebrow">Documentation</p>
+        <h2>Reference and release notes</h2>
+      </div>
+      <div class="docs-grid">
+        <a class="doc-card" href="./language_spec.md"><h3>Language Spec</h3><p>Grammar, flags, imports, and tooling commands.</p></a>
+        <a class="doc-card" href="./tutorial.md"><h3>Tutorial</h3><p>Quick examples for getting started.</p></a>
+        <a class="doc-card" href="./stdlib_reference.md"><h3>Stdlib Reference</h3><p>Auto-generated standard library reference.</p></a>
+        <a class="doc-card" href="./release_notes_v0.2.0.md"><h3>v0.2.0 Notes</h3><p>Compatibility and parser/runtime improvements.</p></a>
+        <a class="doc-card" href="./release_notes_v0.1.1.md"><h3>v0.1.1 Notes</h3><p>Build feature detection and release polish.</p></a>
+        <a class="doc-card" href="./errors/"><h3>Error Docs</h3><p>Error code explanations and common fixes.</p></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>SCALF language docs site. Hosted on scalf-lang.github.io.</p>
+  </footer>
+</body>
+</html>

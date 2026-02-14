@@ -1,0 +1,76 @@
+# Rask Language Specification (Draft)
+
+## Phase 1-6 Grammar
+
+```text
+program      -> statement* EOF ;
+statement    -> use_stmt | test_stmt | assert_stmt | var_decl | destructure_decl
+             | func_def | return_stmt | print_stmt | expr_stmt ;
+use_stmt     -> "use" (IDENT ("." IDENT)* | STRING) ("as" IDENT)? ;
+test_stmt    -> "test" STRING block ;
+assert_stmt  -> "assert" expression ("," expression)? ;
+var_decl     -> IDENT (":" type)? "=" expression ;
+destructure_decl -> pattern "=" expression ;
+func_def     -> "def" IDENT "(" params? ")" ("->" type)? block ;
+params       -> param ("," param)* ;
+param        -> IDENT (":" type)? ;
+block        -> "{" statement* "}" ;
+return_stmt  -> "return" expression? ;
+print_stmt   -> "print" ("(" expression ")" | expression) ;
+expr_stmt    -> expression ;
+
+expression   -> assignment ;
+assignment   -> IDENT "=" assignment | coalesce ;
+coalesce     -> equality ( "or" ("return" expression | equality) )* ;
+equality     -> comparison (("==" | "!=") comparison)* ;
+comparison   -> term ((">" | ">=" | "<" | "<=") term)* ;
+term         -> factor (("+" | "-") factor)* ;
+factor       -> unary (("*" | "/" | "%") unary)* ;
+unary        -> ("!" | "-") unary | postfix ;
+postfix      -> primary ( "(" arguments? ")" | "." IDENT | "?." IDENT | "[" expression "]" | "!" )* ;
+primary      -> NUMBER | STRING | "true" | "false" | "nil"
+             | IDENT | "(" expression ")" | match_expr | list_literal | map_literal ;
+list_literal -> "[" (expression ("," expression)*)? "]"
+             | "[" expression "for" IDENT "in" expression ("if" expression)? "]" ;
+map_literal  -> "{" ((IDENT | STRING) ":" expression ("," (IDENT | STRING) ":" expression)*)? "}" ;
+match_expr   -> "match" expression "{" match_arm* "}" ;
+match_arm    -> pattern "=>" expression ("," | ";" | NEWLINE)* ;
+pattern      -> "_" | IDENT | NUMBER | STRING | "true" | "false" | "nil"
+             | "[" (pattern ("," pattern)*)? "]"
+             | "{" (IDENT (":" pattern)? ("," IDENT (":" pattern)?)*)? "}" ;
+
+type         -> union ;
+union        -> nullable ("|" nullable)* ;
+nullable     -> primary_type ("?")* ;
+primary_type -> IDENT generic_args?
+             | "(" (type ("," type)*)? ")" "->" type
+             | "(" type ")" ;
+generic_args -> "<" type ("," type)* ">" ;
+```
+
+## Runtime Flags
+
+- `--allow-read=<path1,path2,...>`
+- `--allow-write=<path1,path2,...>`
+- `--allow-net=<domain1,domain2,...>`
+- `--allow-env`
+- `--allow-all`
+
+## URL Imports (Phase 5 Start)
+
+- Syntax: `use "https://example.com/lib.rask@v1" as lib`
+- First import fetches remote source and writes:
+  - cache: `$HOME/.rask/cache/modules/<sha256>.rask` (or `RASK_CACHE_DIR`)
+  - lockfile: `.rask.lock` in current directory (or `RASK_LOCKFILE`)
+- Subsequent imports verify cached content hash against `.rask.lock`
+
+## Doc Generation
+
+- `rask docs` generates `docs/stdlib_reference.md` from top-of-file comments in `stdlib/std/*.scl`
+- Optional output override: `rask docs --out=path/to/file.md`
+
+## Tooling Commands
+
+- `rask fmt [--check] <file>`
+- `rask check <file>`
+- `rask test <file> [permission flags]`
